@@ -445,6 +445,16 @@ do
     MiniIcons.mock_nvim_web_devicons()
   end
 
+  -- [[ Ctags y Rails support ]]
+  -- Indexación automática de Ctags en segundo plano (para ir a definición con Ctrl + ])
+  vim.pack.add { gh 'ludovicchabant/vim-gutentags' }
+  vim.g.gutentags_ctags_exclude = {
+    '*.git', '*.svg', '*.json', 'node_modules', 'log', 'tmp', 'public', 'vendor'
+  }
+
+  -- Navegación nativa y comandos útiles para Rails (:Emodel, :Econtroller, :A, etc.)
+  vim.pack.add { gh 'tpope/vim-rails' }
+
   -- Better Around/Inside textobjects
   --
   -- Examples:
@@ -591,6 +601,8 @@ do
       vim.keymap.set('n', 'grt', builtin.lsp_type_definitions, { buffer = buf, desc = '[G]oto [T]ype Definition' })
     end,
   })
+
+  vim.pack.add { gh 'quangnguyen30192/cmp-nvim-tags' }
 
   -- Override default behavior and theme when searching
   vim.keymap.set('n', '<leader>/', function()
