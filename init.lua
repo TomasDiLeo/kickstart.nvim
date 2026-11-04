@@ -938,6 +938,13 @@ do
   --
   --  See `:help nvim-treesitter-intro`
 
+  vim.filetype.add({
+    extension = {
+      ejs = 'embedded_template',
+      jst = 'embedded_template',
+    },
+  })
+
   -- NOTE: You can also specify a branch or a specific commit
   vim.pack.add { { src = gh 'nvim-treesitter/nvim-treesitter', version = 'main' } }
 
