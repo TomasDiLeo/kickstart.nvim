@@ -602,8 +602,6 @@ do
     end,
   })
 
-  vim.pack.add { gh 'quangnguyen30192/cmp-nvim-tags' }
-
   -- Override default behavior and theme when searching
   vim.keymap.set('n', '<leader>/', function()
     -- You can pass additional configuration to Telescope to change the theme, layout, etc.
