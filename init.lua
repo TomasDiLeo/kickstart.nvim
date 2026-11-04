@@ -445,14 +445,17 @@ do
     MiniIcons.mock_nvim_web_devicons()
   end
 
-  -- [[ Ctags y Rails support ]]
-  -- Indexación automática de Ctags en segundo plano (para ir a definición con Ctrl + ])
+-- [[ Ctags y Rails support ]]
   vim.pack.add { gh 'ludovicchabant/vim-gutentags' }
   vim.g.gutentags_ctags_exclude = {
     '*.git', '*.svg', '*.json', 'node_modules', 'log', 'tmp', 'public', 'vendor'
   }
+  -- Argumentos avanzados para mejorar la definición de clases/métodos en Ruby
+  vim.g.gutentags_ctags_extra_args = {
+    '--extra=+q',
+    '--fields=+afmikKzS',
+  }
 
-  -- Navegación nativa y comandos útiles para Rails (:Emodel, :Econtroller, :A, etc.)
   vim.pack.add { gh 'tpope/vim-rails' }
 
   -- Better Around/Inside textobjects
