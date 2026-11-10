@@ -157,8 +157,8 @@ do
   vim.o.cursorline = true
 
   -- Minimal number of screen lines to keep above and below the cursor.
-  vim.o.scrolloff = 15
-  vim.o.sidescrolloff = 25
+  vim.o.scrolloff = 8
+  vim.o.sidescrolloff = 10
   -- if performing an operation that would fail due to unsaved changes in the buffer (like `:q`),
   -- instead raise a dialog asking if you wish to save the current file(s)
   -- See `:help 'confirm'`
@@ -338,7 +338,7 @@ do
   vim.pack.add { gh 'NMAC427/guess-indent.nvim' }
   require('guess-indent').setup {}
 
-  vim.pack.add { gh 'ThePrimeagen/vim-be-good'}
+  vim.pack.add { gh 'ThePrimeagen/vim-be-good' }
 
   -- Here is a more advanced configuration example that passes options to `gitsigns.nvim`
   --
@@ -445,10 +445,17 @@ do
     MiniIcons.mock_nvim_web_devicons()
   end
 
--- [[ Ctags y Rails support ]]
+  -- [[ Ctags y Rails support ]]
   vim.pack.add { gh 'ludovicchabant/vim-gutentags' }
   vim.g.gutentags_ctags_exclude = {
-    '*.git', '*.svg', '*.json', 'node_modules', 'log', 'tmp', 'public', 'vendor'
+    '*.git',
+    '*.svg',
+    '*.json',
+    'node_modules',
+    'log',
+    'tmp',
+    'public',
+    'vendor',
   }
   -- Argumentos avanzados para mejorar la definición de clases/métodos en Ruby
   vim.g.gutentags_ctags_extra_args = {
@@ -630,6 +637,43 @@ do
 
   -- Shortcut for searching your Neovim configuration files
   vim.keymap.set('n', '<leader>sn', function() builtin.find_files { cwd = vim.fn.stdpath 'config', follow = true } end, { desc = '[S]earch [N]eovim files' })
+end
+
+-- ============================================================
+-- GIT DIFF VIEW (VSCode-like changed files + side-by-side diff)
+-- ============================================================
+do
+  vim.pack.add {
+    gh 'nvim-lua/plenary.nvim', -- dependency (safe to add twice)
+    gh 'sindrets/diffview.nvim',
+  }
+
+  require('diffview').setup {
+    view = {
+      default = { layout = 'diff2_horizontal' }, -- side by side
+      merge_tool = { layout = 'diff3_horizontal' },
+    },
+    file_panel = {
+      listing_style = 'tree', -- 'list' for a flat list
+      win_config = { position = 'right', width = 35 },
+    },
+    keymaps = {
+      view = { { 'n', 'q', '<cmd>DiffviewClose<CR>', { desc = 'Close diffview' } } },
+      file_panel = { { 'n', 'q', '<cmd>DiffviewClose<CR>', { desc = 'Close diffview' } } },
+    },
+  }
+
+  -- Toggle: open if closed, close if open
+  vim.keymap.set('n', '<leader>gd', function()
+    if next(require('diffview.lib').views) == nil then
+      vim.cmd 'DiffviewOpen'
+    else
+      vim.cmd 'DiffviewClose'
+    end
+  end, { desc = '[G]it [D]iffview toggle' })
+
+  vim.keymap.set('n', '<leader>gf', '<cmd>DiffviewFileHistory %<CR>', { desc = '[G]it [F]ile history (current file)' })
+  vim.keymap.set('n', '<leader>gF', '<cmd>DiffviewFileHistory<CR>', { desc = '[G]it history (repo)' })
 end
 
 -- ============================================================
@@ -951,12 +995,12 @@ do
   --
   --  See `:help nvim-treesitter-intro`
 
-  vim.filetype.add({
+  vim.filetype.add {
     extension = {
       ejs = 'embedded_template',
       jst = 'embedded_template',
     },
-  })
+  }
 
   -- NOTE: You can also specify a branch or a specific commit
   vim.pack.add { { src = gh 'nvim-treesitter/nvim-treesitter', version = 'main' } }
