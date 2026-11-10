@@ -447,6 +447,7 @@ do
 
   -- [[ Ctags y Rails support ]]
   vim.pack.add { gh 'ludovicchabant/vim-gutentags' }
+  vim.g.gutentags_enabled = 0 -- Disable automatic tag generation on save
   vim.g.gutentags_ctags_exclude = {
     '*.git',
     '*.svg',
